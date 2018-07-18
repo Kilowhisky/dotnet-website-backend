@@ -2,27 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetwebsitebackend.Entity;
 using dotnetwebsitebackend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetwebsitebackend.Controllers
 {
     [Route("api/posts")]
     public class PostsController : Controller
     {
-        static int _postId = 0;
-        static List<Post> _posts = new List<Post>();
+        private readonly DataContext _context;
 
+        public PostsController(DataContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
+        /// Gets the last 5 blog posts
+        /// </summary>
+        /// <returns>The get.</returns>
         [HttpGet]
         public IEnumerable<Post> Get()
         {
-            return _posts.OrderByDescending(x => x.createdAt);
+            return _context.Posts.OrderByDescending(x => x.createdAt).Take(5);
         }
 
+        /// <summary>
+        /// Gets the post by its identifier
+        /// </summary>
+        /// <returns>The get.</returns>
+        /// <param name="id">Identifier.</param>
         [HttpGet("{id}", Name = "GetPost")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(int id)
         {
-            var post = _posts.FirstOrDefault(x => x.id == id);
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.id == id);
             if (post == null)
             {
                 return NotFound();
@@ -30,39 +46,58 @@ namespace dotnetwebsitebackend.Controllers
             return Ok(post);
         }
 
+        /// <summary>
+        /// Creates a new post
+        /// </summary>
+        /// <returns>The post.</returns>
+        /// <param name="post">Post.</param>
         [HttpPost]
-        public IActionResult Post([FromForm]Post post)
+        public async Task<IActionResult> Post([FromForm]Post post)
         {
             post.createdAt = DateTime.Now;
-            post.id = (++_postId).ToString();
-            _posts.Add(post);
-            return CreatedAtRoute("GetPost", new { id = post.id }, post);
+
+            _context.Posts.Add(post);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtRoute("GetPost", new { post.id }, post);
         }
 
+        /// <summary>
+        /// Updates an existing post
+        /// </summary>
+        /// <returns>The put.</returns>
+        /// <param name="id">Identifier.</param>
+        /// <param name="post">Post.</param>
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromForm]Post post)
+        public async Task<IActionResult> Put(int id, [FromForm]Post post)
         {
-            var dbPost = _posts.FirstOrDefault(x => x.id == id);
-            if (dbPost == null)
+            if (await _context.Posts.AnyAsync(x => x.id == id) == false)
             {
                 return NotFound();
             }
-            _posts.Remove(dbPost);
-            _posts.Add(post);
+            _context.Posts.Update(post);
+
+            await _context.SaveChangesAsync();
 
             return Ok(post);
         }
 
-
+        /// <summary>
+        /// Deletes a post
+        /// </summary>
+        /// <returns>The delete.</returns>
+        /// <param name="id">Identifier.</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var dbPost = _posts.FirstOrDefault(x => x.id == id);
+            var dbPost = await _context.Posts.FirstOrDefaultAsync(x => x.id == id);
             if (dbPost == null)
             {
                 return NotFound();
             }
-            _posts.Remove(dbPost);
+            _context.Posts.Remove(dbPost);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
