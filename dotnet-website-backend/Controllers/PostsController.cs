@@ -25,9 +25,12 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The get.</returns>
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public IEnumerable<Post> GetCategory(string category)
         {
-            return _context.Posts.OrderByDescending(x => x.createdAt).Take(5);
+            return _context.Posts
+                           .Where(x => x.category == category)
+                           .OrderByDescending(x => x.createdAt)
+                           .Take(5);
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace dotnetwebsitebackend.Controllers
         /// <returns>The get.</returns>
         /// <param name="id">Identifier.</param>
         [HttpGet("{id}", Name = "GetPost")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             var post = await _context.Posts.FirstOrDefaultAsync(x => x.id == id);
             if (post == null)
@@ -51,10 +54,14 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The post.</returns>
         /// <param name="post">Post.</param>
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]Post post)
         {
-            post.createdAt = DateTime.Now;
+            if (await _context.Posts.AnyAsync(x => x.id == post.id))
+            {
+                return StatusCode(409); // Conflict
+            }
 
             _context.Posts.Add(post);
 
@@ -69,8 +76,9 @@ namespace dotnetwebsitebackend.Controllers
         /// <returns>The put.</returns>
         /// <param name="id">Identifier.</param>
         /// <param name="post">Post.</param>
+        //[Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromForm]Post post)
+        public async Task<IActionResult> Put(string id, [FromForm]Post post)
         {
             if (await _context.Posts.AnyAsync(x => x.id == id) == false)
             {
@@ -88,8 +96,9 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The delete.</returns>
         /// <param name="id">Identifier.</param>
+        //[Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var dbPost = await _context.Posts.FirstOrDefaultAsync(x => x.id == id);
             if (dbPost == null)

@@ -7,10 +7,10 @@ namespace dotnetwebsitebackend.Models
     public class Post
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public string id { get; set; }
         public string title { get; set; }
         public string content { get; set; }
+        public string category { get; set; }
         public DateTime createdAt { get; set; }
     }
 }

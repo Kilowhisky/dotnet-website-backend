@@ -10,6 +10,5 @@ namespace dotnetwebsitebackend.Entity
         public DataContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Post> Posts { get; set; }
-        public DbSet<ContactInfo> ContactInfos { get; set; }
     }
 }
