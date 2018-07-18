@@ -25,10 +25,11 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The get.</returns>
         [HttpGet]
-        public IEnumerable<Post> GetCategory(string category, int take = 5)
+        public IEnumerable<Post> GetCategory(string category, string search = null, int take = 5)
         {
             return _context.Posts
                            .Where(x => x.category == category)
+                           .Where(x => search == null || x.content.Contains(search) || x.title.Contains(search))
                            .OrderByDescending(x => x.createdAt)
                            .Take(take);
         }
