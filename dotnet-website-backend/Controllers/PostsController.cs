@@ -55,7 +55,7 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The post.</returns>
         /// <param name="post">Post.</param>
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]Post post)
         {
@@ -77,7 +77,7 @@ namespace dotnetwebsitebackend.Controllers
         /// <returns>The put.</returns>
         /// <param name="id">Identifier.</param>
         /// <param name="post">Post.</param>
-        //[Authorize]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromForm]Post post)
         {
@@ -97,10 +97,14 @@ namespace dotnetwebsitebackend.Controllers
         /// </summary>
         /// <returns>The delete.</returns>
         /// <param name="id">Identifier.</param>
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
+            foreach(var claim in this.User.Claims){
+                Console.WriteLine(claim);
+            }
+
             var dbPost = await _context.Posts.FirstOrDefaultAsync(x => x.id == id);
             if (dbPost == null)
             {
