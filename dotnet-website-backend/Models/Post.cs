@@ -11,6 +11,7 @@ namespace dotnetwebsitebackend.Models
         public string title { get; set; }
         public string content { get; set; }
         public string category { get; set; }
+        public bool allowComments { get; set; }
         public DateTime createdAt { get; set; }
     }
 }
