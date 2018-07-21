@@ -29,7 +29,6 @@ namespace dotnet_website_backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddCors();
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("test-db"));
 
             // Add oauth 2.0
@@ -60,12 +59,6 @@ namespace dotnet_website_backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder =>
-            {
-                builder.WithOrigins("http://localhost:4200");
-                builder.AllowAnyMethod();
-                builder.AllowAnyHeader();
-            });
             app.UseAuthentication();
 
             app.UseMvc();
