@@ -21,6 +21,17 @@ namespace dotnetwebsitebackend.Controllers
         }
 
         /// <summary>
+        /// Gets a list of categories for posts.
+        /// Categories are sections of posts
+        /// </summary>
+        /// <returns>The categories.</returns>
+        [HttpGet("categories")]
+        public IEnumerable<string> GetCategories()
+        {
+            return _context.Posts.Select(x => x.category).Distinct().OrderBy(x => x);
+        }
+
+        /// <summary>
         /// Gets the last 5 blog posts
         /// </summary>
         /// <returns>The get.</returns>
@@ -101,7 +112,8 @@ namespace dotnetwebsitebackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            foreach(var claim in this.User.Claims){
+            foreach (var claim in this.User.Claims)
+            {
                 Console.WriteLine(claim);
             }
 
