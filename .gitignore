@@ -39,3 +39,4 @@ Thumbs.db
 
 # dotCover
 *.dotCover
+dotnet-website-backend/wwwroot

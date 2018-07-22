@@ -60,8 +60,11 @@ namespace dotnet_website_backend
             }
 
             app.UseAuthentication();
-
-            app.UseMvc();
+            app.UseFileServer(); // Serve files in wwwroot (eg. our SPA)
+            app.UseMvc(routes => {
+                // When a 404 is encountered on the API serve our SPA to boot us up.
+                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
+            });
         }
     }
 }
