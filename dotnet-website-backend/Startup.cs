@@ -29,7 +29,13 @@ namespace dotnet_website_backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("test-db"));
+            services.AddDbContext<DataContext>(options =>
+            {
+#if DEBUG   
+                options.UseSqlite(Configuration["ConnectionString"]); // Use this for release and for creating DB migrations
+                //options.UseInMemoryDatabase("blog.db"); // Use this for testing...
+#endif
+            });
 
             // Add oauth 2.0
             // From here: https://auth0.com/docs/quickstart/backend/aspnet-core-webapi
@@ -65,6 +71,12 @@ namespace dotnet_website_backend
                 // When a 404 is encountered on the API serve our SPA to boot us up.
                 routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
             });
+
+            // Make sure our database is created an migrated properly
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetService<DataContext>().Database.Migrate();
+            }
         }
     }
 }
