@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dotnetwebsitebackend.Entity;
+using Api.Entity;
 
-namespace dotnetwebsitebackend.Migrations
+namespace Api.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20180722150732_InitialCreate")]
@@ -18,7 +18,7 @@ namespace dotnetwebsitebackend.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
 
-            modelBuilder.Entity("dotnetwebsitebackend.Models.Post", b =>
+            modelBuilder.Entity("Api.Models.Post", b =>
                 {
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();

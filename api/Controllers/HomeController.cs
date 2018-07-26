@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetwebsitebackend.Controllers
+namespace Api.Controllers
 {
     /// <summary>
     /// Serves the static index.html file when needed.

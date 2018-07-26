@@ -1,9 +1,9 @@
 ﻿using System;
-using dotnetwebsitebackend.Models;
+using Api.Models;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetwebsitebackend.Entity
+namespace Api.Entity
 {
     public class DataContext : DbContext
     {

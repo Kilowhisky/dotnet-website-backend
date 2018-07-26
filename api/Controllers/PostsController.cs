@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotnetwebsitebackend.Entity;
-using dotnetwebsitebackend.Models;
+using Api.Entity;
+using Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetwebsitebackend.Controllers
+namespace Api.Controllers
 {
     [Route("api/posts")]
     public class PostsController : Controller

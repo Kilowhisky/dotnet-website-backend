@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace dotnetwebsitebackend.Models
+namespace Api.Models
 {
     public class Post
     {
