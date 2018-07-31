@@ -29,13 +29,24 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+#if DEBUG
             services.AddDbContext<DataContext>(options =>
-            {
-#if DEBUG   
-                options.UseSqlite(Configuration["ConnectionString"]); // Use this for release and for creating DB migrations
-                //options.UseInMemoryDatabase("blog.db"); // Use this for testing...
-#endif
+            { 
+                options.UseInMemoryDatabase("blog.db"); // Use this for testing...
             });
+#else
+            services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(options =>
+            {
+                var host = Environment.GetEnvironmentVariable("DB_HOST");
+                var instance = Environment.GetEnvironmentVariable("DB_INSTANCE");
+                var db = Environment.GetEnvironmentVariable("DB_NAME");
+                var user = Environment.GetEnvironmentVariable("DB_USERNAME");
+                var pass = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+                options.UseNpgsql($"Host={host}/{instance};Database={db};Username={user};Password={pass}");
+            });
+#endif
 
             // Add oauth 2.0
             // From here: https://auth0.com/docs/quickstart/backend/aspnet-core-webapi
