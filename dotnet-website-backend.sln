@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{3C16E304-F3AF-4AC8-A4AE-DFA0408C3286}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{3C16E304-F3AF-4AC8-A4AE-DFA0408C3286}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Tests", "Api.Tests\Api.Tests.csproj", "{4602E8E7-AFC2-4BF9-AC17-1B22B9DDD58D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "Api.Tests\Api.Tests.csproj", "{4602E8E7-AFC2-4BF9-AC17-1B22B9DDD58D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B80BEAB3-82C8-4503-B2F6-C0806C56FDFD}"
 	ProjectSection(SolutionItems) = preProject
