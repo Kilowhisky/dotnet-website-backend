@@ -29,22 +29,20 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-#if DEBUG
+#if DEPLOY
             services.AddDbContext<DataContext>(options =>
-            { 
-                options.UseInMemoryDatabase("blog.db"); // Use this for testing...
-            });
-#else
-            services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(options =>
             {
-                var host = Environment.GetEnvironmentVariable("DB_HOST");
-                var instance = Environment.GetEnvironmentVariable("DB_INSTANCE");
+                var host = Environment.GetEnvironmentVariable("DB_HOSTNAME");
                 var db = Environment.GetEnvironmentVariable("DB_NAME");
                 var user = Environment.GetEnvironmentVariable("DB_USERNAME");
                 var pass = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-                options.UseNpgsql($"Host={host}/{instance};Database={db};Username={user};Password={pass}");
+                options.UseMySql($"Data Source={host};Initial Catalog={db};User ID={user};Password={pass}");
+            });
+#else
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseInMemoryDatabase("blog.db"); // Use this for testing...
             });
 #endif
 
@@ -75,19 +73,24 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+#if DEPLOY
+                // Make sure our database is created an migrated properly
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    serviceScope.ServiceProvider.GetService<DataContext>().Database.Migrate();
+                }
+#endif
+            }
 
             app.UseAuthentication();
             app.UseFileServer(); // Serve files in wwwroot (eg. our SPA)
-            app.UseMvc(routes => {
+            app.UseMvc(routes =>
+            {
                 // When a 404 is encountered on the API serve our SPA to boot us up.
                 routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
             });
-
-            // Make sure our database is created an migrated properly
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetService<DataContext>().Database.Migrate();
-            }
         }
     }
 }

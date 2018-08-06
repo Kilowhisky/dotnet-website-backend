@@ -1,12 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>api.tests</RootNamespace>
-
     <IsPackable>false</IsPackable>
-
     <AssemblyName>api.tests</AssemblyName>
+    <Configurations>Debug;Release;Deploy</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
