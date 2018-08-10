@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # build our www-root which holds our website itself
-sh ./build-wwwroot.sh
+sh $TRAVIS_BUILD_DIR/scripts/build-wwwroot.sh
 
 # Build the API with the wwwroot in it
 dotnet publish -c Deploy
