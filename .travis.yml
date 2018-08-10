@@ -1,8 +1,12 @@
 language: csharp
 mono: none
+node_js:
+  - "6"
 dotnet: 2.1.300
 addons:
   ssh_known_hosts: wetzelrice.com
+cache:
+  yarn: true
 script:
   - dotnet restore
   - dotnet build ./Api/

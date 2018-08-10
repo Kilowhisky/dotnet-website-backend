@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # create a temp directory so we have a build location
 CURR_DIR=`pwd`
@@ -13,12 +13,12 @@ git clone -b release https://github.com/Kilowhisky/ember-website.git .
 yarn install --non-interactive
 
 # build everything
-ember build --prod
+yarn build-produciton
 
 # copy out to the build directory
-shopt -u dotglob        # disable globbing for dot files
-rm -r $SCRIPTPATH/../Api/wwwroot/*
-cp -r ./dist/* $SCRIPTPATH/../Api/wwwroot
+#shopt -u dotglob        # disable globbing for dot files
+#rm -r $SCRIPTPATH/../Api/wwwroot
+cp -r $WORK_DIR/dist/ $SCRIPTPATH/../Api/wwwroot
 
 #cleanup after ourselves
 rm -rf $WORK_DIR
