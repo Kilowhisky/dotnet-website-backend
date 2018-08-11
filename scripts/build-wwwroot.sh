@@ -18,7 +18,7 @@ yarn build-produciton
 # copy out to the build directory
 #shopt -u dotglob        # disable globbing for dot files
 #rm -r $SCRIPTPATH/../Api/wwwroot
-mv $WORK_DIR/dist $SCRIPTPATH/../Api/wwwroot
+mv $WORK_DIR/dist/* $SCRIPTPATH/../Api/wwwroot/
 
 #cleanup after ourselves
 rm -rf $WORK_DIR
