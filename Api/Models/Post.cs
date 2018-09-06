@@ -9,6 +9,7 @@ namespace Api.Models
         [Key]
         public string id { get; set; }
         public string title { get; set; }
+        [MaxLength(int.MaxValue)]
         public string content { get; set; }
         public string category { get; set; }
         public bool allowComments { get; set; }
